@@ -31,16 +31,14 @@ app.post('/weather', (req, res) => {
             if (error)
                 console.log(error);
             else {
-                console.log("data from google api : " + JSON.stringify(location));
+                console.log("data from OpenWeatherMap api : " + JSON.stringify(location, undefined, 2));
 
-                forecast.getForecast(location.latitude, location.long, function (error, response, forecast) {
+                forecast.getForecast(location.response.body.coord.lat, location.response.body.coord.lon, function (error, response, forecast) {
                     if (error)
                         console.log(error);
                     else {
                         console.log("data from forecast api: " + JSON.stringify(forecast));
-                        //     currently: body.currently.summary,
-                        //     hourly: body.hourly.summary
-                        res.status(200).send({ 'message': 'POST weather API ' + JSON.stringify(forecast) });
+                        res.status(200).send({ 'message': 'POST weather API ' + 'timezone ' + forecast.timezone +' current weather' + JSON.stringify(forecast.current.weather) });
                     }
                 });
             }
